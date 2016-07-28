@@ -84,8 +84,6 @@ public class FileStatisticServiceTest {
         
         assertNotNull(fileStatisticService.getFilesByFileId(new Long(f.getId())).get(0).getFileId());
         
-        for(FileStatistic fStat : fileStatisticService.getFilesByFileId(new Long(f.getId())))
-            log.info("~~~~~~ "+fStat);
         fileStatisticService.delete(fs);
         fileStatisticService.delete(fs2);
         fileStatisticService.delete(fs3);
