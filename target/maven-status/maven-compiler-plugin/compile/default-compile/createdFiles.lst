@@ -1,0 +1,14 @@
+com\webfileanalyzer\service\impl\FileStatisticServiceImpl.class
+com\webfileanalyzer\dao\impl\FileStatisticDAOImpl.class
+com\webfileanalyzer\service\FilesService.class
+com\webfileanalyzer\dao\impl\FilesDAOImpl.class
+com\webfileanalyzer\domain\FileStatistic.class
+com\webfileanalyzer\dao\FileStatisticDAO.class
+com\webfileanalyzer\service\impl\FilesServiceImpl.class
+com\webfileanalyzer\dao\FilesDAO.class
+com\webfileanalyzer\controller\IndexController$IndexControllerKeys.class
+com\webfileanalyzer\service\FileStatisticService.class
+com\webfileanalyzer\domain\Files$FilesFieldsKey.class
+com\webfileanalyzer\controller\IndexController.class
+com\webfileanalyzer\domain\FileStatistic$FileStatisticKey.class
+com\webfileanalyzer\domain\Files.class

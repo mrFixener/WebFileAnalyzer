@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
+    <diskStore path="java.io.tmpdir/ehcache/OutSource"/>
+    <defaultCache
+        maxElementsInMemory="100"
+        eternal="false"
+        overflowToDisk="true"
+        memoryStoreEvictionPolicy="LFU" />
+    <cache name="getFilesByFileIdCache"
+           maxElementsInMemory="100"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="true"
+           memoryStoreEvictionPolicy="LFU" />   
+    <cache name="getFilesLineMoreThenCache"
+           maxElementsInMemory="100"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="true"
+           memoryStoreEvictionPolicy="LFU" />
+        <cache name="filesServiceGetAllCache"
+           maxElementsInMemory="100"
+           eternal="false"
+           overflowToDisk="true"
+           diskPersistent="true"
+           memoryStoreEvictionPolicy="LFU" />
+</ehcache>
