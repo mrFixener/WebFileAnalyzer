@@ -22,7 +22,8 @@ App.controller('mainCtrl', ['$scope', "$window", "$http", function($scope, $wind
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}, data: 'fileName='+$scope.fileName+'&lines='+$scope.lines}).
                 success(function(data, status) {
                     if(status === 200){
-                        $window.location.href = $scope.serverPath+"/fileStatistic.jsp?fileId="+data;
+                        console.log(data);
+                        //$window.location.href = $scope.serverPath+"/fileStatistic.jsp?fileId="+data;
                     }
         }).
                 error(function(data, status) {

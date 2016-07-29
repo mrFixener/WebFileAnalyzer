@@ -41,7 +41,7 @@ public class FileStatisticDAOImpl implements FileStatisticDAO{
         q.setMaxResults(MAX_ROWS);
         return q.list();*/
         //List<FileStatistic> lCreat = getAllBetween(MAX_ROWS, 0);
-        return hibernateTemplate.findByNamedParam(" from FileStatistic where fileId = :fileId", "fileId", id);
+        return hibernateTemplate.findByNamedParam(" from FileStatistic where fileId = :fileId order by id", "fileId", id);
         
     }
     

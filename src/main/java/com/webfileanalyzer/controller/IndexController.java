@@ -5,6 +5,7 @@
  */
 package com.webfileanalyzer.controller;
 
+import com.fileanalyzer.util.ProcUserLines;
 import static com.webfileanalyzer.controller.IndexController.IndexControllerKeys.*;
 import com.webfileanalyzer.service.FileStatisticService;
 import com.webfileanalyzer.service.FilesService;
@@ -66,7 +67,7 @@ public class IndexController {
                                     @RequestParam(value = "lines",    required = true) String lines) {
         try {
             log.info("/procStat : fileName="+fileName+"&lines="+lines);
-            return String.valueOf(0);
+            return Long.toString(new ProcUserLines().proc(lines, fileName));
         } catch (Exception ex) {
             return ex.getMessage();
         }
