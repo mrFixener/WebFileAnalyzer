@@ -27,16 +27,15 @@ public class FilesServiceImpl implements FilesService{
 
     @Autowired
     private EhCacheCacheManager cacheManager;
-    
-    private static final String Files_LineMore_Then_Cache ="getFilesLineMoreThenCache";
-    private static final String Files_Service_Get_All_Cache ="filesServiceGetAllCache";
+      
+    private static final String Files_LineMore_Then_B_Cache ="getFilesLineMoreThenBeetweenCache";
+    private static final String Files_Service_Get_All_B_Cache ="filesServiceGetAllBeetweenCache";
     @Transactional(readOnly = true)
     @Override
     public Files getFileById(Long id) {
         return filesDAO.getFileById(id);
     }
     
-    @Cacheable(value = Files_Service_Get_All_Cache)
     @Transactional(readOnly = true)
     @Override
     public List<Files> getAll() {
@@ -64,15 +63,29 @@ public class FilesServiceImpl implements FilesService{
         filesDAO.delete(dbFile);
     }
 
-    @Cacheable(value = Files_LineMore_Then_Cache)
     @Transactional(readOnly = true)
     @Override
     public List<Files> getFilesLineMoreThen(Long numMoreThen) {
         return filesDAO.getFilesLineMoreThen(numMoreThen);
     }
     
-    private void clearCache(){
-        cacheManager.getCacheManager().getCache(Files_LineMore_Then_Cache).removeAll();
-        cacheManager.getCacheManager().getCache(Files_Service_Get_All_Cache).removeAll();
+    @Override
+    public void clearCache(){
+        cacheManager.getCacheManager().getCache(Files_LineMore_Then_B_Cache).removeAll();
+        cacheManager.getCacheManager().getCache(Files_Service_Get_All_B_Cache).removeAll();
+    }
+
+    @Cacheable(value = Files_Service_Get_All_B_Cache)
+    @Transactional(readOnly = true)
+    @Override
+    public List<Files> getAll(int from, int to) {
+        return filesDAO.getAll(from, to);
+    }
+
+    @Cacheable(value = Files_LineMore_Then_B_Cache)
+    @Transactional(readOnly = true)
+    @Override
+    public List<Files> getFilesLineMoreThen(Long numMoreThen, int from, int to) {
+        return filesDAO.getFilesLineMoreThen(numMoreThen, from, to);
     }
 }

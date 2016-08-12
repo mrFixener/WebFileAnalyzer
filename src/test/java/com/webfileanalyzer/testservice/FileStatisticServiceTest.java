@@ -10,13 +10,11 @@ import com.webfileanalyzer.domain.Files;
 import com.webfileanalyzer.service.FileStatisticService;
 import com.webfileanalyzer.service.FilesService;
 import java.util.Date;
-import java.util.List;
 import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -54,15 +52,6 @@ public class FileStatisticServiceTest {
     }
     
     @Test
-    public void getAllBetweenTest(){
-        FileStatistic fs=  new FileStatistic("Line unit test", 5l, 45l, 2l, 6.8);
-        fileStatisticService.add(fs);
-        List<FileStatistic> out =fileStatisticService.getAllBetween(Integer.valueOf(10), Integer.valueOf(0));
-        assertTrue(out != null && out.size() > 0);
-        fileStatisticService.delete(fs);
-    }
-
-    @Test
     public void getFileByIdTest() {
         Files f = new Files();
         f.setFileName("junit test");
@@ -79,10 +68,10 @@ public class FileStatisticServiceTest {
         fs3.setFileId(f.getId());
         fileStatisticService.add(fs3);
         
-        assertEquals("Huumber of inserted params must be same with retrieved.", 3, 
-                fileStatisticService.getFilesByFileId(new Long(f.getId())).size());
+        assertEquals("Number of inserted params must be same with retrieved.", 3, 
+                fileStatisticService.getStatisticsByFileId(new Long(f.getId())).size());
         
-        assertNotNull(fileStatisticService.getFilesByFileId(new Long(f.getId())).get(0).getFileId());
+        assertNotNull(fileStatisticService.getStatisticsByFileId(new Long(f.getId())).get(0).getFileId());
         
         fileStatisticService.delete(fs);
         fileStatisticService.delete(fs2);

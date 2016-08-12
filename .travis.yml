@@ -1,9 +1,0 @@
-sudo: false
-language: java
-jdk:
-  - oraclejdk7
-install: /bin/true
-script:  mvn install -Dmaven.test.skip=true
-branches:
-   only:
-     - master

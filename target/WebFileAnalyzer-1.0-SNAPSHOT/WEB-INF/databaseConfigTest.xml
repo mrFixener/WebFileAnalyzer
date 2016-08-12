@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:aop="http://www.springframework.org/schema/aop" 
+       xmlns:context="http://www.springframework.org/schema/context" 
+       xmlns:jee="http://www.springframework.org/schema/jee" 
+       xmlns:lang="http://www.springframework.org/schema/lang" 
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:tx="http://www.springframework.org/schema/tx" 
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd">
+
+    <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+        <property name="driverClassName" value="${conf.driverClassName}"/>
+        <property name="url" value="${conf.jdbc}"/>
+        <property name="username" value="${conf.username}"/>
+        <property name="password" value="${conf.password}"/>
+    </bean>
+ 
+ 
+    <bean id="sessionFactory" name="sessionFac" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="annotatedClasses">
+            <list>
+                <value>com.webfileanalyzer.domain.Files</value>
+                <value>com.webfileanalyzer.domain.FileStatistic</value>
+            </list>
+        </property>
+        <property name="hibernateProperties">
+            <props> 
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>  
+                <prop key="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</prop>
+                <prop key="hibernate.connection.charset">UTF-8</prop>
+                <prop key="hibernate.connection.characterEncoding">UTF-8</prop>
+                <prop key="hibernate.connection.useUnicode">true</prop> 
+                <prop key="hibernate.hbm2ddl.auto">update</prop>
+                <prop key="hibernate.default_schema">public</prop>
+                <prop key="hibernate.c3p0.init_size">1</prop>
+                <prop key="hibernate.c3p0.min_size">5</prop>
+                <prop key="hibernate.c3p0.max_size">8</prop>
+                <prop key="hibernate.c3p0.timeout">300</prop>
+                <prop key="hibernate.c3p0.max_statements">30</prop>
+                <prop key="hibernate.c3po.acquire_increment">1</prop>
+                <prop key="hibernate.hb2dll.import_files">classpath:/createTables.sql</prop>
+                <prop key="hibernate.order_updates">true</prop>
+            </props>
+        </property>
+    </bean>
+    
+    <tx:annotation-driven transaction-manager="transactionManager"/>
+    
+    <bean id = "transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory"/>
+    </bean>
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"/>
+        <property name="cacheQueries" value="true"/>
+    </bean>
+ 
+</beans>

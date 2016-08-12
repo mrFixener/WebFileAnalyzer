@@ -13,13 +13,13 @@ import java.util.List;
  * @author Dimon
  */
 public interface FileStatisticDAO {
-    public static final int MAX_ROWS = 500;
+    public static final int MAX_ROWS = 1000;
     public FileStatistic getFileById(Long id);
 
-    public List<FileStatistic> getFilesByFileId(Long id);
+    public List<FileStatistic> getStatisticsByFileId(Long id);
+    
+    public List<FileStatistic> getStatisticsByFileId(Long id,  int from, int qty);
             
-    public List<FileStatistic> getAllBetween(Integer start, Integer end);
-
     public void add(FileStatistic dbFile);
 
     public void update(FileStatistic dbFile);

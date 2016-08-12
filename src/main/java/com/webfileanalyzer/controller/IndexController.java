@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
- //import javax.annotation.Resource;
 
 /**
  *
@@ -31,7 +30,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class IndexController {
     private static final Logger log = Logger.getLogger(IndexController.class);
-    public static final String ERR_KEY = "err";
     
     @Autowired
     private FilesService filesService;
@@ -39,8 +37,13 @@ public class IndexController {
     @Autowired
     private FileStatisticService fileStatisticService;
 
-    private Map<String, Object> resp = new HashMap();
-   
+    public IndexController(){}
+    
+    public IndexController(FilesService filesService,
+                           FileStatisticService fileStatisticService){//Injection for mock tests
+        this.filesService         = filesService;
+        this.fileStatisticService = fileStatisticService;
+    }
     private Map<String, Object> errorViewMap(Exception ex){
         Map<String, Object> errMap = new HashMap();
         errMap.put(ERR_KEY, (Object) ex);
@@ -50,46 +53,46 @@ public class IndexController {
     @RequestMapping(value = "/getFiles", method = RequestMethod.GET)
     public @ResponseBody
     ResponseEntity<Object>
-      getFiles(@RequestParam(value = "moreThen", required = false) String moreThen) {
+      getFiles(@RequestParam(value = "from", required = true) String from,
+               @RequestParam(value = "qty", required = true) String qty,
+               @RequestParam(value = "moreThen", required = false) String moreThen) {
         try {
+            Map<String, Object> resp = new HashMap();
             resp.put(FILES, moreThen != null 
-                            ?    filesService.getFilesLineMoreThen(Long.valueOf(moreThen)) 
-                            :    filesService.getAll());
+                            ?    filesService.getFilesLineMoreThen(Long.valueOf(moreThen), 
+                                                                   Integer.valueOf(from),
+                                                                   Integer.valueOf(qty)) 
+                            :    filesService.getAll(Integer.valueOf(from),Integer.valueOf(qty)));
             return new ResponseEntity<>((Object) resp, HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>((Object)errorViewMap(ex), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @RequestMapping(value = "/procStat", method = RequestMethod.POST, produces = MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/procStat", method = RequestMethod.POST, produces = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public @ResponseBody
     String procStat(@RequestParam(value = "fileName", required = true) String fileName,
-                                    @RequestParam(value = "lines",    required = true) String lines) {
+                    @RequestParam(value = "lines",    required = true) String lines) {
         try {
             log.info("/procStat : fileName="+fileName+"&lines="+lines);
+            filesService.clearCache();
             return Long.toString(new ProcUserLines().proc(lines, fileName));
         } catch (Exception ex) {
             return ex.getMessage();
         }
     }
 
-    @RequestMapping(value = "/getFileStat/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "/getFileStat/{id}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
     public @ResponseBody
-    ResponseEntity<Object> getFileStat(@PathVariable("id") long value) {
+    ResponseEntity<Object> getFileStat(@PathVariable("id")                            long value,
+                                       @RequestParam(value = "from", required = true) String from,
+                                       @RequestParam(value = "qty", required = true)  String qty) {
         try {
-            resp.put(FILE_STAT, fileStatisticService.getFilesByFileId(value));
+            Map<String, Object> resp = new HashMap();
+            resp.put(FILE_STAT, fileStatisticService.getStatisticsByFileId(value,
+                                                                           Integer.valueOf(from),
+                                                                           Integer.valueOf(qty)));
             return new ResponseEntity<>((Object) resp, HttpStatus.OK);
-        } catch (Exception ex) {
-            return new ResponseEntity<>((Object)errorViewMap(ex), HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-    @RequestMapping(value = "/getFileStatBetween", method = RequestMethod.GET)
-    public @ResponseBody
-    ResponseEntity<Object> getFileStatBetween(@RequestParam(value = "numRows", required = true) Integer numRows,
-            @RequestParam(value = "shift", required = true) Integer shift) {
-        try {
-            return new ResponseEntity<>((Object) fileStatisticService.getAllBetween(shift, shift), HttpStatus.OK);
         } catch (Exception ex) {
             return new ResponseEntity<>((Object)errorViewMap(ex), HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -98,5 +101,6 @@ public class IndexController {
     public static class IndexControllerKeys{
         public static final String FILES ="files";
         public static final String FILE_STAT ="fileStat";
+        public static final String ERR_KEY = "err";
     }
 }

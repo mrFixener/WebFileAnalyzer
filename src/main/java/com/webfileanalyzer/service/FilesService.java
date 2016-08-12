@@ -24,4 +24,10 @@ public interface FilesService {
     public void delete(Files dbFile);
 
     public List<Files> getFilesLineMoreThen(Long numMoreThen);
+    
+    public List<Files> getAll(int from, int to);
+    
+    public List<Files> getFilesLineMoreThen(Long numMoreThen, int from, int to);
+    
+    public void clearCache();
 }

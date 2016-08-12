@@ -7,7 +7,6 @@ package com.webfileanalyzer.dao.impl;
 
 import com.webfileanalyzer.dao.FilesDAO;
 import static com.webfileanalyzer.dao.impl.FileStatisticDAOImpl.MAX_ROWS;
-import com.webfileanalyzer.domain.FileStatistic;
 import com.webfileanalyzer.domain.Files;
 import java.util.List;
 import org.hibernate.Query;
@@ -33,7 +32,7 @@ public class FilesDAOImpl implements FilesDAO{
 
     @Override
     public List<Files> getAll() {
-        Query q = hibernateTemplate.getSessionFactory().getCurrentSession().createQuery(" from Files ");
+        Query q = hibernateTemplate.getSessionFactory().getCurrentSession().createQuery(" from Files order by procDate desc");
         return q.setMaxResults(MAX_ROWS).list();
     }
 
@@ -62,16 +61,26 @@ public class FilesDAOImpl implements FilesDAO{
                 + "join (select count(*) as \"CNT\", fileid  "
                 + "from public.filestatistic group by FILEID)  as t2 on t2.fileid=t1.id where t2.\"CNT\" > :numMoreThen")
                 .addEntity(Files.class)
-        .setParameter("numMoreThen", numMoreThen)
-        .setMaxResults(MAX_ROWS).list();
-   
-        /*Session session = hibernateTemplate.getSessionFactory().openSession();
-        return session.createSQLQuery(
-                "select t1.* from public.files as t1 "
+                .setParameter("numMoreThen", numMoreThen)
+                .setMaxResults(MAX_ROWS).list();
+    }
+
+    @Override
+    public List<Files> getAll(int from, int qty) {
+        Query q = hibernateTemplate.getSessionFactory().getCurrentSession().createQuery(" from Files order by procDate desc");
+        return q.setFirstResult(from).setMaxResults(qty).list();
+    }
+
+    @Override
+    public List<Files> getFilesLineMoreThen(Long numMoreThen, int from, int qty) {
+        Session session = hibernateTemplate.getSessionFactory().openSession();
+        return session.createSQLQuery("select t1.* from public.files as t1 "
                 + "join (select count(*) as \"CNT\", fileid  "
                 + "from public.filestatistic group by FILEID)  as t2 on t2.fileid=t1.id where t2.\"CNT\" > :numMoreThen")
                 .addEntity(Files.class)
-                .setParameter("numMoreThen", numMoreThen).list();*/
+        .setParameter("numMoreThen", numMoreThen)
+        .setFirstResult(from)
+        .setMaxResults(qty).list();
     }
     
 }

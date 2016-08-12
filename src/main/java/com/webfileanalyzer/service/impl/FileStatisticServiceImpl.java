@@ -34,24 +34,14 @@ public class FileStatisticServiceImpl implements FileStatisticService{
     @Autowired
     private EhCacheCacheManager cacheManager;
     
-    private static final String Files_By_File_Id_Cache = "getFilesByFileIdCache";
-
-    @Cacheable(value = Files_By_File_Id_Cache)
-    @Transactional(readOnly = true)
-    @Override
-    public List<FileStatistic> getFilesByFileId(Long id) {
-       List<FileStatistic> startPrimtableQeur = fileStatisticDAO.getFilesByFileId(id);
-       if(startPrimtableQeur != null && !startPrimtableQeur.isEmpty())
-           startPrimtableQeur.get(0).getId();
-        return fileStatisticDAO.getFilesByFileId(id);
-    }
+    private static final String Files_By_File_Id_B_Cache = "getFilesByFileIdBetweenCache";
     
     @Transactional(readOnly = true)
     @Override
-    public List<FileStatistic> getAllBetween(Integer start, Integer end) {
-        return fileStatisticDAO.getAllBetween(start, end);
+    public List<FileStatistic> getStatisticsByFileId(Long id) {
+        return fileStatisticDAO.getStatisticsByFileId(id);
     }
-
+    
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     @Override
     public void add(FileStatistic dbFile) {
@@ -74,6 +64,13 @@ public class FileStatisticServiceImpl implements FileStatisticService{
     }  
     
     private void clearCache() {
-        cacheManager.getCacheManager().getCache(Files_By_File_Id_Cache).removeAll();
+        cacheManager.getCacheManager().getCache(Files_By_File_Id_B_Cache).removeAll();
+    }
+
+    @Cacheable(value = Files_By_File_Id_B_Cache)
+    @Transactional(readOnly = true)
+    @Override
+    public List<FileStatistic> getStatisticsByFileId(Long id, int from, int qty) {
+        return fileStatisticDAO.getStatisticsByFileId(id, from, qty);
     }
 }

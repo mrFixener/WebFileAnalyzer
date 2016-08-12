@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd">
-    <diskStore path="java.io.tmpdir/ehcache/OutSource"/>
+    <diskStore path="java.io.tmpdir/ehcache/WebFileAnalyzer"/>
     <defaultCache
         maxElementsInMemory="100"
         eternal="false"
         overflowToDisk="true"
         memoryStoreEvictionPolicy="LFU" />
-    <cache name="getFilesByFileIdCache"
+    <cache name="getFilesLineMoreThenBeetweenCache"
            maxElementsInMemory="100"
            eternal="false"
            overflowToDisk="true"
            diskPersistent="true"
            memoryStoreEvictionPolicy="LFU" />   
-    <cache name="getFilesLineMoreThenCache"
+    <cache name="filesServiceGetAllBeetweenCache"
            maxElementsInMemory="100"
            eternal="false"
            overflowToDisk="true"
            diskPersistent="true"
-           memoryStoreEvictionPolicy="LFU" />
-        <cache name="filesServiceGetAllCache"
+           memoryStoreEvictionPolicy="LFU" /> 
+    <cache name="getFilesByFileIdBetweenCache"
            maxElementsInMemory="100"
            eternal="false"
            overflowToDisk="true"

@@ -15,10 +15,10 @@ import java.util.List;
 public interface FileStatisticService {
     public FileStatistic getFileById(Long id);
 
-    public List<FileStatistic> getFilesByFileId(Long id);
+    public List<FileStatistic> getStatisticsByFileId(Long id);
     
-    public List<FileStatistic> getAllBetween(Integer start, Integer end);
-
+    public List<FileStatistic> getStatisticsByFileId(Long id,  int from, int qty);
+    
     public void add(FileStatistic dbFile);
 
     public void update(FileStatistic dbFile);

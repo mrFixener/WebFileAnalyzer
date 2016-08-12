@@ -33,6 +33,6 @@
         <property name="configLocation" value="classpath:/ehcache.xml"/>
         <property name="shared" value="true"/>
     </bean>
-    <import resource="databaseConfig.xml"/>
+    <import resource="databaseConfigTest.xml"/>
    
 </beans>

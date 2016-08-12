@@ -1,6 +1,6 @@
 
 /*
-POST GRESS db
+postgres db
 */
 CREATE DATABASE "APP"
   WITH OWNER = postgres

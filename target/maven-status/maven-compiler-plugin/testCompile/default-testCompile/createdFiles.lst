@@ -1,2 +1,3 @@
-com\webfileanalyzer\testservice\FileStatisticServiceTest.class
+com\webfileanalyzer\testcontroller\IndexControllerTest.class
 com\webfileanalyzer\testservice\FilesServiceTest.class
+com\webfileanalyzer\testservice\FileStatisticServiceTest.class
